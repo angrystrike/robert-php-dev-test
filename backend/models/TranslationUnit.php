@@ -3,18 +3,13 @@
 namespace models;
 
 use PDOException;
+use PDO;
 
 require_once 'Model.php';
 
 
 class TranslationUnit extends Model
 {
-    // private $servername = "localhost";
-    // private $username = "robert";
-    // private $password = "Qwerty_123";
-    // private $dbname = "robert";
-    // private $id_to_retrieve = 1;
-
     public function save()
     {
         try {
@@ -36,18 +31,11 @@ class TranslationUnit extends Model
         }
     }
 
-    // public function get($id) 
-    // {
-    //     ret
-    // }
-
     public function list()
     {
-        $data = [
-            'message' => 'Hello, this is a JSON response!',
-            'status' => 'success'
-        ];
+        $stmt = $this->db->query("SELECT * FROM translation_units");
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
-        return json_encode($data);
+        return json_encode($result);
     }
 }
