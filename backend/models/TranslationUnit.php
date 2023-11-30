@@ -5,37 +5,57 @@ namespace models;
 use PDOException;
 use PDO;
 
-require_once 'Model.php';
-
 
 class TranslationUnit extends Model
 {
-    public function save()
+    public function save($data, $id = null)
     {
-        try {
-            $id = 1;
-        
-            $stmt = $this->db->prepare("SELECT * FROM translation_units WHERE id = :id");
-            $stmt->bindParam(':id', $id);
-            $stmt->execute();
-        
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-            if ($result) {
-                print_r($result);
-            } else {
-                echo "No records found with the given ID.";
-            }
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
+        if ($id) {
+            $sql = 
+                "UPDATE translation_units 
+                SET unit_text = :unit_text, 
+                    unit_type = :unit_type, 
+                    lang_code = :lang_code, 
+                    updated_at = CURRENT_TIMESTAMP 
+                WHERE id = :id";
+
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+        } else {
+            $sql = 
+                "INSERT INTO translation_units (unit_text, unit_type, lang_code, created_at, updated_at) 
+                VALUES (:unit_text, :unit_type, :lang_code, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+            $stmt = $this->db->prepare($sql);
         }
+
+        $stmt->bindParam(':unit_text', $data['text']);
+        $stmt->bindParam(':unit_type', $data['type']);
+        $stmt->bindParam(':lang_code', $data['languageCode']);
+
+        $stmt->execute();
+        
+        return json_encode([
+            'status' => 200,
+            'message' => 'Translation unit saved successfully'
+        ]);
     }
 
     public function list()
     {
-        $stmt = $this->db->query("SELECT * FROM translation_units");
+        $stmt = $this->db->query("SELECT * FROM translation_units ORDER BY created_at DESC");
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
+        return json_encode($result);
+    }
+
+    public function get($id)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM translation_units WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return json_encode($result);
     }
 }
