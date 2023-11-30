@@ -11,6 +11,11 @@ $router->get('/translations/{id}', function ($id) {
     echo $unit->get($id);
 });
 
+$router->delete('/translations/{id}', function ($id) {
+    $unit = new TranslationUnit();
+    echo $unit->delete($id);
+});
+
 $router->get('/translations', function () {
     $unit = new TranslationUnit();
     echo $unit->list();

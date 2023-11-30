@@ -8,23 +8,34 @@ import languages from '../../../../../languages';
 const TranslationList = () => {
   const [translationUnits, setTranslationUnits] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:8000/translations');
-        const data = await response.json();
-        setTranslationUnits(data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/translations');
+      const data = await response.json();
+      setTranslationUnits(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
 
   const getLanguageLabel = (langCode) => {
     const foundLanguage = languages.find((lang) => lang.value === langCode);
     return foundLanguage ? foundLanguage.label : langCode;
+  };
+
+  const handleDelete = async (id) => {
+    const confirmed = window.confirm('Are you sure you want to delete this Translation Unit?');
+    if (confirmed) {
+      await fetch(`http://localhost:8000/translations/${id}`, {
+        method: 'DELETE'
+      });
+
+      fetchData();
+    }
   };
 
   return (
@@ -40,6 +51,12 @@ const TranslationList = () => {
             <Link href={`/translations/${unit.id}`}>
               Edit
             </Link>
+          </button>
+          <button 
+            className='ml-3 mt-3 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+            onClick={() => handleDelete(unit.id)}
+          >
+            Delete
           </button>
         </div>
       ))}

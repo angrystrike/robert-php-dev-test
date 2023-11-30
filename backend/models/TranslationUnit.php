@@ -58,4 +58,16 @@ class TranslationUnit extends Model
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return json_encode($result);
     }
+
+    public function delete($id)
+    {
+        $stmt = $this->db->prepare("DELETE FROM translation_units WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return json_encode([
+            'status' => 200,
+            'message' => 'Translation unit deleted successfully'
+        ]);
+    }
 }
