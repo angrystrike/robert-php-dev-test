@@ -1,8 +1,10 @@
+import TranslationSaveForm from '../components/business/translations/SaveForm'
 
-export default function SaveForm() {
+
+export default function SaveFormPage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1 className="text-3xl">1231111</h1>
+    <main className="flex min-h-screen container mx-auto flex-col items-center justify-between p-24">
+     <TranslationSaveForm />
     </main>
   )
 }
