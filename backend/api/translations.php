@@ -4,11 +4,17 @@ namespace api;
 
 use Bramus\Router\Router;
 use models\TranslationUnit;
+use models\TranslationHistory;
 
 
 $router->get('/translations/{id}', function ($id) {
     $unit = new TranslationUnit();
     echo $unit->get($id);
+});
+
+$router->get('/history/{id}', function ($id) {
+    $history = new TranslationHistory();
+    echo $history->findByUnitId($id);
 });
 
 $router->delete('/translations/{id}', function ($id) {

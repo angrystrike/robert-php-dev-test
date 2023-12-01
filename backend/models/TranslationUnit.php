@@ -4,12 +4,15 @@ namespace models;
 
 use PDOException;
 use PDO;
+use models\TranslationHistory;
 
 
 class TranslationUnit extends Model
 {
     public function save($data, $id = null)
     {
+        $history = new TranslationHistory();
+
         if ($id) {
             $sql = 
                 "UPDATE translation_units 
@@ -33,6 +36,10 @@ class TranslationUnit extends Model
         $stmt->bindParam(':unit_type', $data['type']);
         $stmt->bindParam(':lang_code', $data['languageCode']);
 
+        if ($id) {
+            $history->save($data, $id);
+        }
+        
         $stmt->execute();
         
         return json_encode([

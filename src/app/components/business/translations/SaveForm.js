@@ -16,6 +16,8 @@ const TranslationSaveForm = () => {
     text: '',
   });
 
+  const [history, setHistory] = useState([]);
+
   useEffect(() => {
     const fetchUnit = async () => {
       const response = await fetch(`http://localhost:8000/translations/${params.id}`);
@@ -27,8 +29,16 @@ const TranslationSaveForm = () => {
       });
     };
 
+    const fetchUnitHistory = async () => {
+      const response = await fetch(`http://localhost:8000/history/${params.id}`);
+      const data = await response.json();
+      setHistory(data);
+      console.log('data', data);
+    };
+
     if (action === 'edit') {
       fetchUnit();
+      fetchUnitHistory();
     }
   }, []);
 
@@ -57,8 +67,6 @@ const TranslationSaveForm = () => {
       router.push('/');
     } 
   };
-
-  console.log('form', formData);
 
   return (
     <div className='w-full w-1/2'>
@@ -125,6 +133,17 @@ const TranslationSaveForm = () => {
             onChange={handleChange}
           ></textarea>
         </div>
+
+        {history.length > 0 &&
+          <div className='w-full mt-4'>
+            <h1 className='text-2xl mb-3'>Changes history</h1>
+            <ul>
+              {history.map((item, index) => (
+                <li key={index}>{ item.message }</li>
+              ))}
+            </ul>
+          </div>
+        }
 
         <div className="mt-5 flex items-center justify-between">
           <button
