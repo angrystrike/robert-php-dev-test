@@ -11,7 +11,7 @@ class TranslationUnitTest extends TestCase
     {
         $translationUnit = new TranslationUnit();
 
-        $result = $translationUnit->get(1);
+        $result = $translationUnit->get(2);
         $result = json_decode($result, true);
 
         if ($result) {

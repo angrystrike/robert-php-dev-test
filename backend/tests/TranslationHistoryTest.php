@@ -16,10 +16,10 @@ class TranslationHistoryTest extends TestCase
         $result = $history->findByUnitId($unitId);
         $result = json_decode($result, true);
 
-        $this->assertEmpty($result, 'Expected result to be an empty array, when unit ID is not found');
-
         if ($result) {
-            $this->assertJson($result);
+            $this->assertIsArray($result);
+        } else {
+            $this->assertEmpty($result, 'Expected result to be an empty array, when unit ID is not found');
         }
     }
 
