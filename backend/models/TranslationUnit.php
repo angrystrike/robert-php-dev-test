@@ -6,9 +6,10 @@ use PDOException;
 use PDO;
 use models\TranslationHistory;
 
-
+// Model for translation_units DB table
 class TranslationUnit extends Model
 {
+    // Handle insert or update operation
     public function save($data, $id = null)
     {
         $history = new TranslationHistory();
@@ -48,6 +49,7 @@ class TranslationUnit extends Model
         ]);
     }
 
+    // Return list of all Translation Unit's in table
     public function list()
     {
         $stmt = $this->db->query("SELECT * FROM translation_units ORDER BY created_at DESC");
@@ -56,6 +58,7 @@ class TranslationUnit extends Model
         return json_encode($result);
     }
 
+    // Find Translation unit by id
     public function get($id)
     {
         $stmt = $this->db->prepare("SELECT * FROM translation_units WHERE id = :id");
@@ -66,6 +69,7 @@ class TranslationUnit extends Model
         return json_encode($result);
     }
 
+    // Delete Translation unit by id
     public function delete($id)
     {
         $stmt = $this->db->prepare("DELETE FROM translation_units WHERE id = :id");

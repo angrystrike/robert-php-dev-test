@@ -4,6 +4,7 @@ use PHPUnit\Framework\TestCase;
 use models\TranslationHistory;
 
 
+// PHPUnit class for testing TranslationHistory class
 class TranslationHistoryTest extends TestCase
 {
     public function testFindByUnitId()

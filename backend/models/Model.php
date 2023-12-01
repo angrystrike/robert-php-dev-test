@@ -4,6 +4,7 @@ namespace models;
 
 use PDO;
 
+// Base class for all models in app
 class Model {
 
     public function __construct()
@@ -11,6 +12,7 @@ class Model {
         $this->db = self::getConnection();
     }
 
+    // Generate connection using config file
     public static function getConnection()
     {
         $params = include('config.php');
@@ -20,5 +22,4 @@ class Model {
         
         return $db;
     }
-
 }

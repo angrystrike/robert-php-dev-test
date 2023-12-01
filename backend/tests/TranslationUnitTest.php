@@ -4,6 +4,7 @@ use PHPUnit\Framework\TestCase;
 use models\TranslationUnit;
 
 
+// PHPUnit class for testing TranslationUnit class
 class TranslationUnitTest extends TestCase
 {
     public function testGet()

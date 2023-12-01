@@ -4,9 +4,10 @@ namespace models;
 
 use PDO;
 
-
+//Model for unit_history DB table
 class TranslationHistory extends Model
 {
+    // Add change log, if needed
     public function save($newData, $id)
     {
         $newData = [
@@ -34,6 +35,7 @@ class TranslationHistory extends Model
             ]);
         }
 
+        // Compare new data with old. If it value is changed add new history row
         foreach($newData as $key => $value) {
             if ($newData[$key] !== $result[$key]) {
                 $sql = 
@@ -56,6 +58,7 @@ class TranslationHistory extends Model
         ]);
     }
 
+    // Find all change history by Translation Unit id
     public function findByUnitId($unitId)
     {
         $stmt = $this->db->prepare("SELECT * FROM unit_history WHERE unit_id = :id");
