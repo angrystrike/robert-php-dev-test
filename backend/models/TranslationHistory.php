@@ -27,6 +27,13 @@ class TranslationHistory extends Model
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        if (!$result) {
+            return json_encode([
+                'status' => 404,
+                'message' => 'Translation Unit with such ID was not found'
+            ]);
+        }
+
         foreach($newData as $key => $value) {
             if ($newData[$key] !== $result[$key]) {
                 $sql = 
@@ -42,7 +49,11 @@ class TranslationHistory extends Model
                 $stmt->execute();
             }
         }
-        
+
+        return json_encode([
+            'status' => 200,
+            'message' => 'History saved successfully'
+        ]);
     }
 
     public function findByUnitId($unitId)
